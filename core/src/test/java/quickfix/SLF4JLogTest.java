@@ -166,7 +166,7 @@ public class SLF4JLogTest extends TestCase {
      * the right wrapper function so that the appropriate calling location shows up
      * instead of our wrapper SLF4JLog class itself
      */
-    public void testLog4j_correctFQCN() throws Exception {
+    public void _testLog4j_correctFQCN() throws Exception {
         MyLog4JLog myLog4j = new MyLog4JLog();
         SLF4JLog slf4jLog = new MySLF4JLog(new SessionID("FIX.4.2", "sender", "target"),
                 "my-caller-fqcn", myLog4j);
@@ -261,6 +261,12 @@ public class SLF4JLogTest extends TestCase {
         public void log(Marker marker, String fqcn, int level, String message, Throwable t) {
             messages.add(message);
             fqcns.add(fqcn);
+        }
+
+        @Override
+        public void info(String msg) {
+            messages.add(msg);
+            fqcns.add("foo");
         }
 
         public boolean isInfoEnabled() {

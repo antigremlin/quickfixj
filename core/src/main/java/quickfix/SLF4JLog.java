@@ -133,12 +133,7 @@ public class SLF4JLog extends AbstractLog {
     protected void log(org.slf4j.Logger log, String text) {
         if (log.isInfoEnabled()) {
             final String message = logPrefix != null ? (logPrefix + text) : text;
-            if (log instanceof LocationAwareLogger) {
-                final LocationAwareLogger la = (LocationAwareLogger) log;
-                la.log(null, callerFQCN, LocationAwareLogger.INFO_INT, message, null, null);
-            } else {
-                log.info(message);
-            }
+            log.info(message);
         }
     }
 

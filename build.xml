@@ -1,7 +1,7 @@
 <project name="master" basedir="." default="">
 	<property file="${user.home}/.build"/>
 	
-	<property name="jvm.java4" value="C:/Development/j2sdk1.4.2_13/bin/java"/>
+	<property name="jvm.java4" value="C:/usr/j2sdk1.4.2/bin/java"/>
 
 	<property name="release.output.dir" value="${basedir}/dist"/>
 
@@ -133,7 +133,7 @@
 
 	<target name="query.version" unless="release.prefix">
 		<input message="Enter version number" addproperty="version" />
-		<property name="release.prefix" value="quickfixj-${version}" />
+		<property name="release.prefix" value="quickfixj_db-${version}" />
 	</target>
 
 	<target name="release.shared" depends="jar,test,javadoc">

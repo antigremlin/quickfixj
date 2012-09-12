@@ -118,8 +118,8 @@
 	Build JAR
 	================================================================= -->
 
-	<property name="quickfixj.core.jar" value="quickfixj-core-${version}.jar" />
-	<property name="quickfixj.all.jar" value="quickfixj-all-${version}.jar" />
+	<property name="quickfixj.core.jar" value="quickfixj-core_db-${version}.jar" />
+	<property name="quickfixj.all.jar" value="quickfixj-all_db-${version}.jar" />
 
 	<target name="jar" description="build jar files" depends="compile">
 		<mkdir dir="${target.dir}" />
@@ -160,7 +160,7 @@
 	<macrodef name="create-message-jar">
 		<attribute name="fixVersion" />
 		<sequential>
-			<jar destfile="${jar.output.dir}/quickfixj-msg-fix@{fixVersion}-${version}.jar"
+			<jar destfile="${jar.output.dir}/quickfixj-msg-fix@{fixVersion}_db-${version}.jar"
 				manifest="${jar.output.dir}/MANIFEST.MF">
 				<fileset dir="${main.resources.dir}" casesensitive="false">
 					<include name="FIX@{fixVersion}.xml" />

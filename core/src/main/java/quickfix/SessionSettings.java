@@ -86,6 +86,7 @@ public class SessionSettings {
     private static final String NEWLINE = "\r\n";
 
     private Properties variableValues = System.getProperties();
+    private Properties contextVariableValues;
 
     /**
      * Creates an empty session settings object.
@@ -102,15 +103,21 @@ public class SessionSettings {
      */
     public SessionSettings(String filename) throws ConfigError {
         this();
-        InputStream in = getClass().getClassLoader().getResourceAsStream(filename);
-        if (in == null) {
-            try {
-                in = new FileInputStream(filename);
-            } catch (final IOException e) {
-                throw new ConfigError(e.getMessage());
-            }
-        }
-        load(in);
+        load(getInputStreamByFileName(filename));
+    }
+
+    /**
+     * Loads session settings from a file.
+     *
+     * @param filename
+     *            the path to the file containing the session settings
+     * @param contextProperties
+     *            extra properties to lookup variable values
+     */
+    public SessionSettings(String filename, Properties contextProperties) throws ConfigError {
+        this();
+        this.contextVariableValues = contextProperties;
+        load(getInputStreamByFileName(filename));
     }
 
     /**
@@ -123,6 +130,18 @@ public class SessionSettings {
     public SessionSettings(InputStream stream) throws ConfigError {
         this();
         load(stream);
+    }
+
+    private InputStream getInputStreamByFileName(String filename) throws ConfigError {
+        InputStream in = getClass().getClassLoader().getResourceAsStream(filename);
+        if (in == null) {
+            try {
+                in = new FileInputStream(filename);
+            } catch (final IOException e) {
+                throw new ConfigError(e.getMessage());
+            }
+        }
+        return in;
     }
 
     /**
@@ -582,7 +601,12 @@ public class SessionSettings {
                 continue;
             }
             final String variable = m.group(1);
-            final String variableValue = variableValues.getProperty(variable);
+            //trying to find variable in System properties
+            String variableValue = variableValues.getProperty(variable);
+            if ((variableValue == null) && (contextVariableValues != null)) {
+                //otherwise trying to find variable in context properties passed to constructor
+                variableValue = contextVariableValues.getProperty(variable);
+            }
             if (variableValue != null) {
                 m.appendReplacement(buffer, variableValue);
             }
